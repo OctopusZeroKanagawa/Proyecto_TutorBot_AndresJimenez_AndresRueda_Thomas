@@ -1,0 +1,761 @@
+{
+  "name": "Workflow 1 - Registro de Estudiante",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "chat_id"
+            },
+            {
+              "name": "telegram_user"
+            },
+            {
+              "name": "text"
+            },
+            {
+              "name": "paso_actual"
+            },
+            {
+              "name": "datos_parciales"
+            }
+          ]
+        }
+      },
+      "id": "39660cd0-4cdc-4a37-998a-055ae5da068d",
+      "name": "Recibir Datos del Router",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1920,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nlet datos = {};\ntry { datos = JSON.parse(item.datos_parciales || '{}'); } catch (e) { datos = {}; }\nreturn [{\n  json: {\n    chat_id: item.chat_id,\n    telegram_user: item.telegram_user,\n    text: item.text,\n    paso_actual: item.paso_actual || '',\n    nombre: datos.nombre || '',\n    correo: datos.correo || ''\n  }\n}];"
+      },
+      "id": "596098b3-eefd-4629-b72a-8c75ca03fff8",
+      "name": "Parsear Datos Parciales",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1696,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.paso_actual}}",
+                    "rightValue": "esperando_nombre",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "03c3244b-3223-474c-873b-042db4b987ff"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.paso_actual}}",
+                    "rightValue": "esperando_correo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0f4d09b9-b454-42af-bc95-e591f62093c5"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "7ecb447b-cceb-470f-bc08-72448327a73f",
+      "name": "Segun Paso Actual",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -1472,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.chat_id}}",
+        "text": "No estas registrado todavia. Para comenzar, escribe tu nombre completo.",
+        "additionalFields": {}
+      },
+      "id": "b0b395d3-ff93-4a12-afe2-741634a8311a",
+      "name": "Pedir Nombre",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1216,
+        544
+      ],
+      "webhookId": "4c48c073-9874-467b-bb27-7437aa011c18",
+      "credentials": {
+        "telegramApi": {
+          "id": "TvJad5y9bWYoDqXu",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek",
+          "mode": "id"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "SESSIONS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "pantalla_actual": "registro",
+            "paso_actual": "esperando_nombre",
+            "datos_parciales": "{}",
+            "telegram_user": "={{$('Parsear Datos Parciales').item.json.telegram_user}}"
+          },
+          "matchingColumns": [
+            "telegram_user"
+          ],
+          "schema": [
+            {
+              "id": "telegram_user",
+              "displayName": "telegram_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pantalla_actual",
+              "displayName": "pantalla_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "paso_actual",
+              "displayName": "paso_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "datos_parciales",
+              "displayName": "datos_parciales",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ccbc7a87-02a8-4970-b117-7e9f31b41430",
+      "name": "Guardar Sesion - Esperando Nombre",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1024,
+        656
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst datos = { nombre: item.text };\nreturn [{ json: { ...item, datos_parciales_json: JSON.stringify(datos) } }];"
+      },
+      "id": "84d73907-0b81-4a43-b1f1-c0d6082ff289",
+      "name": "Guardar Nombre en Sesion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1216,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.chat_id}}",
+        "text": "Gracias. Ahora escribe tu correo.",
+        "additionalFields": {}
+      },
+      "id": "e8546513-2c05-46b7-b230-05418787ce0c",
+      "name": "Pedir Correo",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -992,
+        48
+      ],
+      "webhookId": "07cc464d-a571-4afd-875d-1ce7f5f668b4",
+      "credentials": {
+        "telegramApi": {
+          "id": "TvJad5y9bWYoDqXu",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek",
+          "mode": "id"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "SESSIONS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_user": "={{$('Guardar Nombre en Sesion').item.json.telegram_user}}",
+            "pantalla_actual": "registro",
+            "paso_actual": "esperando_correo",
+            "datos_parciales": "={{$('Guardar Nombre en Sesion').item.json.datos_parciales_json}}"
+          },
+          "matchingColumns": [
+            "telegram_user"
+          ],
+          "schema": [
+            {
+              "id": "telegram_user",
+              "displayName": "telegram_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pantalla_actual",
+              "displayName": "pantalla_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "paso_actual",
+              "displayName": "paso_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "datos_parciales",
+              "displayName": "datos_parciales",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "c0dd41dd-f362-442c-a878-891507c055f0",
+      "name": "Guardar Sesion - Esperando Correo",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -816,
+        48
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst correo = (item.text || '').trim();\nconst regex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nconst valido = regex.test(correo);\nreturn [{ json: { ...item, correo, correo_valido: valido } }];"
+      },
+      "id": "e7165e8b-46a2-4bb7-82c4-4aa6114e66e9",
+      "name": "Validar Correo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1216,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{$json.correo_valido}}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "efc265ca-9ca6-431f-88b8-5b3ee573228f",
+      "name": "Correo Valido",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1024,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.chat_id}}",
+        "text": "Ese correo no parece valido. Por favor escribelo de nuevo, por ejemplo nombre@ufps.edu.co",
+        "additionalFields": {}
+      },
+      "id": "ed623a6d-af81-44fb-8c8d-8e19b7a9a99e",
+      "name": "Avisar Correo Invalido",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        480
+      ],
+      "webhookId": "2546b5e1-1657-42fb-a894-9883094616b4",
+      "credentials": {
+        "telegramApi": {
+          "id": "TvJad5y9bWYoDqXu",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst id_estudiante = 'EST-' + Date.now().toString(36).toUpperCase();\nreturn [{ json: { ...item, id_estudiante } }];"
+      },
+      "id": "da1111bc-36b1-4189-8d71-283fe5d2c550",
+      "name": "Generar ID Estudiante",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -832,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek",
+          "mode": "id"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "ESTUDIANTES"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id_estudiante": "={{$json.id_estudiante}}",
+            "telegram_user": "={{$json.telegram_user}}",
+            "nombre": "={{$json.nombre}}",
+            "correo": "={{$json.correo}}",
+            "estado": "Activo"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id_estudiante",
+              "displayName": "id_estudiante",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telegram_user",
+              "displayName": "telegram_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "correo",
+              "displayName": "correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "e778f74f-83b6-42ad-9f6f-791caf550b78",
+      "name": "Crear Estudiante",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -608,
+        288
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek",
+          "mode": "id"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "SESSIONS"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telegram_user": "={{$('Generar ID Estudiante').item.json.telegram_user}}",
+            "pantalla_actual": "inicio",
+            "datos_parciales": "{}"
+          },
+          "matchingColumns": [
+            "telegram_user"
+          ],
+          "schema": [
+            {
+              "id": "telegram_user",
+              "displayName": "telegram_user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "pantalla_actual",
+              "displayName": "pantalla_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "paso_actual",
+              "displayName": "paso_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "datos_parciales",
+              "displayName": "datos_parciales",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "b5f7c823-2d5d-4f43-8ac7-0391610f64ab",
+      "name": "Limpiar Sesion",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -400,
+        288
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$('Generar ID Estudiante').item.json.chat_id}}",
+        "text": "=Listo, quedaste registrado como {{$('Generar ID Estudiante').item.json.nombre}}. Escribe 1 para solicitar una tutoria.",
+        "additionalFields": {}
+      },
+      "id": "b2f076e5-2508-4ecd-92a3-d012e1712e76",
+      "name": "Confirmar Registro",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        288
+      ],
+      "webhookId": "94b281bc-9271-48a4-a824-f890805a480a",
+      "credentials": {
+        "telegramApi": {
+          "id": "TvJad5y9bWYoDqXu",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Recibir Datos del Router": {
+      "main": [
+        [
+          {
+            "node": "Parsear Datos Parciales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear Datos Parciales": {
+      "main": [
+        [
+          {
+            "node": "Segun Paso Actual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Segun Paso Actual": {
+      "main": [
+        [
+          {
+            "node": "Guardar Nombre en Sesion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validar Correo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pedir Nombre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedir Nombre": {
+      "main": [
+        [
+          {
+            "node": "Guardar Sesion - Esperando Nombre",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Nombre en Sesion": {
+      "main": [
+        [
+          {
+            "node": "Pedir Correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedir Correo": {
+      "main": [
+        [
+          {
+            "node": "Guardar Sesion - Esperando Correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Correo": {
+      "main": [
+        [
+          {
+            "node": "Correo Valido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Correo Valido": {
+      "main": [
+        [
+          {
+            "node": "Generar ID Estudiante",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Avisar Correo Invalido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar ID Estudiante": {
+      "main": [
+        [
+          {
+            "node": "Crear Estudiante",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Estudiante": {
+      "main": [
+        [
+          {
+            "node": "Limpiar Sesion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar Sesion": {
+      "main": [
+        [
+          {
+            "node": "Confirmar Registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "f90e5826-3528-4121-aea2-d4390052469c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
+  },
+  "nodeGroups": [],
+  "id": "mSC2eYqyeRCdtTOh",
+  "tags": []
+}
