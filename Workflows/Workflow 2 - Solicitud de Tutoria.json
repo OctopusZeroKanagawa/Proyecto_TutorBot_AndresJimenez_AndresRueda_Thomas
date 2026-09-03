@@ -208,7 +208,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "={{$json.mensaje_materias}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "d6dc55ee-0c41-4b4d-a8ab-9339dcff6a4a",
       "name": "Mostrar Materias",
@@ -369,7 +371,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Escribe la fecha en la que necesitas la tutoria, en formato AAAA-MM-DD (por ejemplo 2026-09-10).",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "f002e5da-dc82-42f6-86b8-564ddf85abb5",
       "name": "Pedir Fecha",
@@ -472,7 +476,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=No reconoci esa opcion. Por favor escribe el numero de una de las materias de la lista.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "74b862ba-5f53-4030-905f-7066bbce97f1",
       "name": "Materia Invalida",
@@ -666,7 +672,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "={{$json.mensaje_opciones}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "7350b8c4-ac4d-4d6a-90f4-586d02093532",
       "name": "Mostrar Opciones",
@@ -769,7 +777,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=No hay tutores disponibles para {{$json.materia}} el {{$json.fecha}}. Escribe otra fecha en formato AAAA-MM-DD.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "984a6063-3f44-47b7-a728-f24ab2b44309",
       "name": "Sin Disponibilidad",
@@ -872,7 +882,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Esa fecha no es valida. Escribela en formato AAAA-MM-DD, por ejemplo 2026-09-10.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "cc40b19e-c4e6-4744-bdff-453288fd82cc",
       "name": "Fecha Invalida",
@@ -939,7 +951,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=No reconoci esa opcion. Escribe el numero de una de las opciones mostradas.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "4a689470-0738-4272-b784-30a277159c2e",
       "name": "Opcion Invalida",
@@ -1274,7 +1288,9 @@
       "parameters": {
         "chatId": "={{$('Combinar Datos Asignacion').item.json.chat_id}}",
         "text": "=Listo, tu tutoria de {{$('Combinar Datos Asignacion').item.json.materia}} quedo asignada con {{$('Combinar Datos Asignacion').item.json.nombre_tutor}} el {{$('Combinar Datos Asignacion').item.json.fecha}} de {{$('Combinar Datos Asignacion').item.json.hora_inicio}} a {{$('Combinar Datos Asignacion').item.json.hora_fin}}.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "b2a3d4b6-5b2a-461b-b3ea-d4dbc1421d51",
       "name": "Confirmar Estudiante",
@@ -1296,7 +1312,9 @@
       "parameters": {
         "chatId": "={{$('Combinar Datos Asignacion').item.json.tutor_chat_id}}",
         "text": "=Tienes una nueva tutoria asignada: {{$('Combinar Datos Asignacion').item.json.materia}} con {{$('Combinar Datos Asignacion').item.json.nombre_estudiante}} el {{$('Combinar Datos Asignacion').item.json.fecha}} de {{$('Combinar Datos Asignacion').item.json.hora_inicio}} a {{$('Combinar Datos Asignacion').item.json.hora_fin}}.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "90f841de-1204-47e7-848b-52138a09d395",
       "name": "Notificar Tutor",
@@ -1399,7 +1417,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Justo alguien mas tomo ese horario antes que tu. Escribe otra fecha en formato AAAA-MM-DD para ver nuevas opciones.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "602ae1c4-ba59-44cd-b56b-8be009979038",
       "name": "Cupo Ya No Disponible",
@@ -1938,7 +1958,7 @@
     "binaryMode": "separate",
     "availableInMCP": true
   },
-  "versionId": "0dfd766b-769a-47e6-afc7-1a0f71ec7c7f",
+  "versionId": "820be51a-cc38-4c40-8f87-22750ac61494",
   "meta": {
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
   },

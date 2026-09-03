@@ -208,7 +208,9 @@
       "parameters": {
         "chatId": "={{$('Parsear Datos Parciales').item.json.chat_id}}",
         "text": "No tienes tutorías activas para cancelar.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "60b84493-7965-481f-8901-b5f67577f96a",
       "name": "Mensaje Sin Tutorias",
@@ -324,7 +326,9 @@
       "parameters": {
         "chatId": "={{$('Parsear Datos Parciales').item.json.chat_id}}",
         "text": "={{$json.texto_lista}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "680599dc-543b-4b0f-8e08-f3e0a9ccf863",
       "name": "Mensaje Lista Tutorias",
@@ -472,7 +476,9 @@
       "parameters": {
         "chatId": "={{$('Parsear Datos Parciales').item.json.chat_id}}",
         "text": "Ese número no corresponde a ninguna tutoría de la lista. Intenta de nuevo.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "72e1431c-06ef-4051-9865-fb55fe1edb67",
       "name": "Mensaje Seleccion Invalida",
@@ -507,7 +513,9 @@
       "parameters": {
         "chatId": "={{$('Parsear Datos Parciales').item.json.chat_id}}",
         "text": "={{$json.texto_confirmacion}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "bc8b279f-5f8b-443b-854d-e45bc8b97081",
       "name": "Mensaje Confirmar Cancelacion",
@@ -806,7 +814,9 @@
       "parameters": {
         "chatId": "={{$('Parsear Datos Parciales').item.json.chat_id}}",
         "text": "No entendí tu respuesta. Responde Sí o No.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "4df4730e-12a0-4ba1-a2c9-45a1ac6bd20a",
       "name": "Mensaje Confirmacion Invalida",
@@ -972,7 +982,9 @@
       "parameters": {
         "chatId": "={{$json.telegram_user}}",
         "text": "={{'Se ha cancelado la tutoria de ' + $('Actualizar Tutoria Cancelada').item.json.materia + ' del ' + $('Actualizar Tutoria Cancelada').item.json.fecha + ' a las ' + $('Actualizar Tutoria Cancelada').item.json.hora + '.'}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "49961205-3f73-45ef-827b-ff65651ecd3b",
       "name": "Notificar Tutor",
@@ -994,7 +1006,9 @@
       "parameters": {
         "chatId": "={{$('Parsear Datos Parciales').item.json.chat_id}}",
         "text": "Tu tutoría fue cancelada correctamente.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "07da8a62-4c71-4361-a7b0-aafbcd955d7c",
       "name": "Mensaje Cancelacion Confirmada",
@@ -1458,7 +1472,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "057b0fe3-9487-46b1-a836-ffa3689654b3",
+  "versionId": "f4f6ea3d-5728-4582-88d8-8d1e3d3ab823",
   "meta": {
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
   },

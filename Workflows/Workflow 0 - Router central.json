@@ -253,7 +253,9 @@
       "parameters": {
         "chatId": "={{$('Extraer Datos Mensaje').item.json.chat_id}}",
         "text": "=Hola {{$('Extraer Datos Mensaje').item.json.nombre_telegram}}. Escribe 1 para solicitar tutoria, 2 para consultar tus solicitudes o 3 para cancelar una tutoria.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "c1660e4c-aa41-4b20-afe7-2e59a7ac24dc",
       "name": "Enviar Menu Estudiante",
@@ -344,7 +346,9 @@
       "parameters": {
         "chatId": "={{$('Extraer Datos Mensaje').item.json.chat_id}}",
         "text": "Hola tutor. Escribe 1 para ver tu agenda, 2 para agregar franja libre o 3 para marcar una franja como ocupada.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "386ea404-74d1-48d0-b668-bf24c9ffbdd6",
       "name": "Enviar Menu Tutor",
@@ -1081,7 +1085,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "={{$json.mensaje}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "4f79055a-a260-4e98-a247-0bebc6d6acdc",
       "name": "Mostrar Mis Tutorias",
@@ -2281,7 +2287,7 @@
     "binaryMode": "separate",
     "availableInMCP": true
   },
-  "versionId": "093ec39c-a3ef-4681-9239-862c1385f624",
+  "versionId": "3819b433-bc1f-4bb0-bfff-d13ccdac338b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"

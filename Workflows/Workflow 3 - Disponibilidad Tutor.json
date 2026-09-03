@@ -333,7 +333,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "={{$json.mensaje}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "062a1269-371d-4303-ba51-aff07d2c9feb",
       "name": "Mostrar Agenda",
@@ -446,7 +448,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Que dia de la semana quieres abrir (Lunes, Martes, Miercoles, Jueves, Viernes, Sabado o Domingo)?",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "9a8e9767-09ee-4d7b-930b-a515a06170ce",
       "name": "Pedir Dia",
@@ -604,7 +608,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=A que hora empieza esa franja? Escribela en formato HH:MM, por ejemplo 14:00.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "d7bd10e6-acad-45a4-9176-c4dd4913c699",
       "name": "Pedir Hora Inicio",
@@ -717,7 +723,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=No reconoci ese dia. Escribelo completo: Lunes, Martes, Miercoles, Jueves, Viernes, Sabado o Domingo.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "dbd27a16-4c2f-4c8a-b1e6-4fc317f47f87",
       "name": "Dia Invalido",
@@ -784,7 +792,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Y a que hora termina? Tambien en formato HH:MM, por ejemplo 16:00.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "e6025a4b-a7a1-4de3-ba6d-da8bb159d9ef",
       "name": "Pedir Hora Fin",
@@ -897,7 +907,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Ese formato no es valido. Escribe la hora como HH:MM, por ejemplo 09:00 o 14:30.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "6996e75d-5f6c-4cb7-9c4a-f2486ef91b2b",
       "name": "Hora Inicio Invalida",
@@ -1166,7 +1178,9 @@
       "parameters": {
         "chatId": "={{$('Generar ID Dispo').item.json.chat_id}}",
         "text": "=Listo, quedo agregada tu disponibilidad: {{$('Generar ID Dispo').item.json.dia}} de {{$('Generar ID Dispo').item.json.hora_inicio}} a {{$('Generar ID Dispo').item.json.hora_fin_texto}}.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "ed4d730a-0652-47db-ad79-17821a12b2c8",
       "name": "Confirmar Franja Agregada",
@@ -1188,7 +1202,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=Esa hora no es valida, debe tener formato HH:MM y ser posterior a la hora de inicio. Intenta de nuevo.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "79fcdd78-2a18-4b38-ad49-0a8b8303442f",
       "name": "Hora Fin Invalida",
@@ -1291,7 +1307,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "={{$json.mensaje}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "be26c29e-1cd3-455e-b69e-30bf6adc66be",
       "name": "Mostrar Franjas Libres",
@@ -1404,7 +1422,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "={{$json.mensaje}}",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "f80c2b89-02f3-4998-a6b9-f8e3c9c23b0f",
       "name": "Sin Franjas Libres",
@@ -1714,7 +1734,9 @@
       "parameters": {
         "chatId": "={{$('Interpretar Seleccion Ocupar').item.json.chat_id}}",
         "text": "=Listo, marque esa franja como ocupada.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "57296782-81e5-468d-b2e8-5db25bb1327a",
       "name": "Confirmar Franja Ocupada",
@@ -1736,7 +1758,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "=No reconoci esa opcion. Escribe el numero de una de las franjas mostradas.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "6006480c-80e9-4e88-91a9-db166b0d6a29",
       "name": "Seleccion Ocupar Invalida",
@@ -2171,7 +2195,7 @@
     "binaryMode": "separate",
     "availableInMCP": true
   },
-  "versionId": "f99ebc2e-1261-41a6-9646-2ec4e41f3041",
+  "versionId": "04184550-8904-4456-a2cc-d1afc0f7f70b",
   "meta": {
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
   },

@@ -98,7 +98,9 @@
         "sendTo": "mariocupcakes31@gmail.com",
         "subject": "=Reporte semanal TutorBot - {{$json.fecha}}",
         "message": "={{$json.html}}",
-        "options": {}
+        "options": {
+          "appendAttribution": false
+        }
       },
       "id": "9c210fca-5930-4f89-beaa-0a0db15981e1",
       "name": "Enviar Reporte por Correo",
@@ -169,7 +171,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "208445d4-68bf-4df6-9314-7c643634bbda",
+  "versionId": "33581674-7647-4bbf-ae43-758283978508",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"

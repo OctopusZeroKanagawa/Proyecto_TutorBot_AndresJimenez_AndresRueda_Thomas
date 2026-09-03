@@ -112,7 +112,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "No estas registrado todavia. Para comenzar, escribe tu nombre completo.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "b0b395d3-ff93-4a12-afe2-741634a8311a",
       "name": "Pedir Nombre",
@@ -228,7 +230,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "Gracias. Ahora escribe tu correo.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "e8546513-2c05-46b7-b230-05418787ce0c",
       "name": "Pedir Correo",
@@ -376,7 +380,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id}}",
         "text": "Ese correo no parece valido. Por favor escribelo de nuevo, por ejemplo nombre@ufps.edu.co",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "ed623a6d-af81-44fb-8c8d-8e19b7a9a99e",
       "name": "Avisar Correo Invalido",
@@ -580,7 +586,9 @@
       "parameters": {
         "chatId": "={{$('Generar ID Estudiante').item.json.chat_id}}",
         "text": "=Listo, quedaste registrado como {{$('Generar ID Estudiante').item.json.nombre}}. Escribe 1 para solicitar una tutoria.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "b2f076e5-2508-4ecd-92a3-d012e1712e76",
       "name": "Confirmar Registro",
@@ -750,7 +758,7 @@
     "binaryMode": "separate",
     "availableInMCP": true
   },
-  "versionId": "f90e5826-3528-4121-aea2-d4390052469c",
+  "versionId": "cb57ce69-164e-4e9b-9838-67d70dff3865",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"

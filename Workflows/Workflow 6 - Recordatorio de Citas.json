@@ -102,7 +102,9 @@
       "parameters": {
         "chatId": "={{$json.chat_id_estudiante}}",
         "text": "=Recordatorio: tienes una tutoria de {{$json.materia}} el {{$json.fecha}} a las {{$json.hora}}.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "7a2a6df3-e983-46a8-841d-a84741bc6962",
       "name": "Recordar Estudiante (Telegram)",
@@ -124,7 +126,9 @@
       "parameters": {
         "chatId": "={{$('Construir Recordatorios').item.json.chat_id_tutor}}",
         "text": "=Recordatorio: tienes una tutoria de {{$('Construir Recordatorios').item.json.materia}} con {{$('Construir Recordatorios').item.json.nombre_estudiante}} el {{$('Construir Recordatorios').item.json.fecha}} a las {{$('Construir Recordatorios').item.json.hora}}.",
-        "additionalFields": {}
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "id": "858659db-9f98-4f0a-ab88-8f325c61d1b4",
       "name": "Recordar Tutor (Telegram)",
@@ -147,7 +151,9 @@
         "sendTo": "={{$('Construir Recordatorios').item.json.correo_estudiante}}",
         "subject": "=Recordatorio de tutoria - {{$('Construir Recordatorios').item.json.materia}}",
         "message": "=<p>Hola {{$('Construir Recordatorios').item.json.nombre_estudiante}},</p><p>Este es un recordatorio de tu tutoria de <strong>{{$('Construir Recordatorios').item.json.materia}}</strong> con {{$('Construir Recordatorios').item.json.nombre_tutor}} el {{$('Construir Recordatorios').item.json.fecha}} a las {{$('Construir Recordatorios').item.json.hora}}.</p>",
-        "options": {}
+        "options": {
+          "appendAttribution": false
+        }
       },
       "id": "b9071b03-80a7-430d-9ec5-173783c50cc9",
       "name": "Recordar Estudiante (Correo)",
@@ -343,7 +349,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "c9d44716-c0c8-4817-ab41-ab4f7d7c3670",
+  "versionId": "fbb853db-d541-4f6f-ac44-f4917ce9da06",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
