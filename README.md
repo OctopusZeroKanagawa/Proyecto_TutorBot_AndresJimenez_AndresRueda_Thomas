@@ -34,61 +34,74 @@ TutorBot resuelve la coordinación manual de tutorías (correos y mensajes suelt
 El sistema está compuesto por 7 workflows en n8n. El Workflow 0 es el enrutador central: recibe todos los mensajes de Telegram y, según la sesión guardada del usuario, delega en el workflow correspondiente.
 
 ### Workflow 0 — Router central
+
 Recibe cada mensaje de Telegram, identifica si quien escribe es un estudiante o un tutor (o si es un usuario nuevo), y enruta la conversación al workflow correcto según la pantalla y el paso en el que se encuentre la sesión.
 
-![Workflow 0 - Router](<Capturas%20-%20flujos/Workflow%200%20Router.png>)
+![Workflow 0 - Router](Capturas%20-%20flujos/Workflow%200%20Router.png)
 
 ### Workflow 1 — Registro de Estudiante
+
 Wizard de registro: pide nombre y correo, valida el formato del correo, y crea al estudiante en la base de datos.
 
-![Workflow 1 - Registro de Estudiante](<Capturas%20-%20flujos/Workflow%201%20Registro%20de%20Estudiantes.png>)
+![Workflow 1 - Registro de Estudiante](Capturas%20-%20flujos/Workflow%201%20Registro%20de%20Estudiantes.png)
 
 ### Workflow 2 — Solicitud de Tutoría
+
 Wizard de solicitud: el estudiante elige materia y fecha, el sistema busca tutores disponibles ese día, y al confirmar una opción se re-valida la disponibilidad en tiempo real (para evitar que dos estudiantes reserven el mismo cupo) antes de crear la tutoría, bloquear el horario y notificar a ambas partes.
 
-![Workflow 2 - Solicitud de Tutoría](<Capturas%20-%20flujos/Workflow%202%20Solicitud%20de%20asesoria.png>)
+![Workflow 2 - Solicitud de Tutoría](Capturas%20-%20flujos/Workflow%202%20Solicitud%20de%20asesoria.png)
 
 ### Workflow 3 — Disponibilidad de Tutor
+
 Le permite al tutor ver su agenda, agregar una nueva franja libre (día, hora de inicio y hora de fin), o marcar una franja existente como ocupada.
 
-![Workflow 3 - Disponibilidad de Tutor](<Capturas%20-%20flujos/Workflow%203%20Disponibilidad%20de%20tutor.png>)
+![Workflow 3 - Disponibilidad de Tutor](Capturas%20-%20flujos/Workflow%203%20Disponibilidad%20de%20tutor.png)
 
 ### Workflow 4 — Cancelar Tutoría
+
 El estudiante consulta sus tutorías activas, elige cuál cancelar, confirma, y el sistema libera automáticamente la franja horaria y notifica al tutor.
 
-![Workflow 4 - Cancelar Tutoría](<Capturas%20-%20flujos/Workflow%204%20-%20Cancelar%20Tutorias.png>)
+![Workflow 4 - Cancelar Tutoría](Capturas%20-%20flujos/Workflow%204%20-%20Cancelar%20Tutorias.png)
 
 ### Workflow 5 — Reporte de Asistencia
+
 Corre automáticamente por horario (no requiere interacción del usuario). Lee toda la base de tutorías y envía por correo a coordinación un resumen del total de tutorías, desglosado por estado, por materia y por tutor.
 
-![Workflow 5 - Reporte de Asistencia](<Capturas%20-%20flujos/Workflow%205%20Reporte%20de%20correo.png>)
+![Workflow 5 - Reporte de Asistencia](Capturas%20-%20flujos/Workflow%205%20Reporte%20de%20correo.png)
 
 ### Workflow 6 — Recordatorio de Citas
+
 Corre automáticamente cada cierto intervalo de tiempo. Revisa las tutorías próximas a realizarse y, si aún no se ha enviado su recordatorio, notifica al estudiante (por Telegram y por correo) y al tutor (por Telegram).
 
-![Workflow 6 - Recordatorio de Citas](<Capturas%20-%20flujos/Workflow%206%20recordatorio%20de%20citas.png>)
+![Workflow 6 - Recordatorio de Citas](Capturas%20-%20flujos/Workflow%206%20recordatorio%20de%20citas.png)
 
 ## Funcionamiento
 
 ### Registro de estudiante
-![Funcionamiento registro de estudiante](<Capturas%20funcionamiento/Funcionamiento%20registro%20estudiante.png>)
+
+![Funcionamiento registro de estudiante](Capturas%20funcionamiento/Funcionamiento%20registro%20estudiante.png)
 
 ### Solicitud de tutoría
-![Funcionamiento solicitud de tutoría](<Capturas%20funcionamiento/Funcionamiento%20solicitud%20de%20tutoria.png>)
+
+![Funcionamiento solicitud de tutoría](Capturas%20funcionamiento/Funcionamiento%20solicitud%20de%20tutoria.png)
 
 ### Disponibilidad de tutor
-![Funcionamiento disponibilidad de tutor](<Capturas%20funcionamiento/Funcionamiento%20disponibilidad.png>)
-![Funcionamiento disponibilidad de tutor - 2](<Capturas%20funcionamiento/Funcionamiento%20disponibilidad-2.jpg>)
+
+![Funcionamiento disponibilidad de tutor](Capturas%20funcionamiento/Funcionamiento%20disponibilidad.png)
+![Funcionamiento disponibilidad de tutor - 2](Capturas%20funcionamiento/Funcionamiento%20disponibilidad-2.jpg)
 
 ### Cancelación de tutoría
-![Funcionalidad cancelación](<Capturas%20funcionamiento/Funcionalidad%20cancelacion.png>)
+
+![Funcionalidad cancelación](Capturas%20funcionamiento/Funcionalidad%20cancelacion.png)
 
 ### Reporte de asistencia por correo
-![Funcionalidad reportes](<Capturas%20funcionamiento/Funcionaldad%20reportes.png>)
+
+![Funcionalidad reportes](Capturas%20funcionamiento/Funcionaldad%20reportes.png)
 
 ### Recordatorio de citas
-![Funcionalidad recordatorio Telegram](<Capturas%20funcionamiento/Funcionalidad%20recordatorio%20telegram.png>)
-![Funcionalidad recordatorio Gmail](<Capturas%20funcionamiento/Funcionalidad%20recordatorio%20gmail.png>)
+
+![Funcionalidad recordatorio Telegram](Capturas%20funcionamiento/Funcionalidad%20recordatorio%20telegram.png)
+![Funcionalidad recordatorio Gmail](Capturas%20funcionamiento/Funcionalidad%20recordatorio%20gmail.png)
 
 ## Base de datos (Google Sheets)
 
@@ -98,15 +111,43 @@ Enlace al archivo: https://docs.google.com/spreadsheets/d/1tqZ7v554xgO0G0LUbOZ9c
 
 ## Cómo importar los workflows
 
-Cada archivo dentro de la carpeta `Workflows/` puede importarse directamente en n8n desde *Import from File*. Antes de ejecutarlos es necesario:
+Cada archivo dentro de la carpeta `Workflows/` puede importarse directamente en n8n desde _Import from File_. Antes de ejecutarlos es necesario:
 
 1. Configurar las credenciales de Telegram, Google Sheets y Gmail propias en cada nodo correspondiente.
 2. Enlazar el spreadsheet de Google Sheets con el ID del archivo propio (o usar el compartido arriba).
 3. En los nodos "Execute Workflow" del Workflow 0, seleccionar desde la lista el workflow real ya importado en la instancia.
 4. Publicar primero los workflows 1 a 6, y por último el Workflow 0 (router).
 
-## Autores
+## Update: Examen 1
+
+**Enfoque:** lógica de inventario/disponibilidad y notificaciones administrativas automáticas.
+
+**Problema:** el sistema descontaba la disponibilidad del tutor tras cada asignación exitosa, pero coordinación no se enteraba si un tutor se quedaba sin horarios libres hasta que un estudiante intentaba agendar y no encontraba opciones.
+
+**Dónde se implementó:** en el Workflow 2 (Solicitud de Tutoría), justo después del nodo que descuenta la disponibilidad tras una asignación exitosa (`Actualizar Disponibilidad`, que marca la franja reservada como "Ocupado" en la hoja DISPONIBILIDAD).
+
+**Lógica agregada:**
+
+1. **Contar Disponibilidad Tutor** — vuelve a leer la hoja DISPONIBILIDAD filtrando por el tutor que se acaba de asignar.
+2. **Calcular Franjas Libres** — cuenta cuántas de esas franjas siguen en estado "Libre" después del descuento.
+3. **Disponibilidad Crítica (IF)** — evalúa si las franjas libres restantes son menores o iguales a 1.
+   - Si es crítico, envía a un Chat ID de coordinación el mensaje: `⚠️ ALERTA DE DISPONIBILIDAD: El tutor [Nombre] solo tiene [Cantidad] franja(s) libre(s). Favor gestionar refuerzo.`
+4. **Disponibilidad Cero (IF)** — si las franjas libres llegaron a 0, actualiza automáticamente el estado del tutor a "Inactivo" en la hoja TUTORES.
+
+En cualquier caso (alerta enviada o no), el flujo continúa normalmente hacia la limpieza de sesión y la confirmación de la tutoría al estudiante y al tutor, sin interrumpir la experiencia del usuario.
+
+### Nodos nuevos en el canvas
+
+![Nodos nuevos - alerta de disponibilidad](Capturas%20-%20flujos/Workflow%202%20Modificacion.png)
+
+### Prueba exitosa en Telegram
+
+![Alerta recibida en Telegram](Capturas%20funcionamiento/Funcionalidad%20disponibilidad%20critica%20%20-%20mensaje%20telegram.jpg)
+
+### Evidencia en Google Sheets
+
+![Tutor marcado como Inactivo](Capturas%20funcionamiento/Funcionalidad%20disponibilidad%20critica%20-%20inactivdad.png)
+
+## Autor
 
 - Andrés Felipe Jiménez Ramírez
-- Andrés Rueda
-- Thomas
