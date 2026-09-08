@@ -23,26 +23,26 @@
           ]
         }
       },
-      "id": "565b3e39-107e-4115-96d9-9d0d8dd40619",
+      "id": "0af8c102-91e9-45a2-a465-2e6ae1722b0d",
       "name": "Recibir Datos del Router",
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        1024,
-        1360
+        -288,
+        1008
       ]
     },
     {
       "parameters": {
         "jsCode": "const item = $input.first().json;\nlet datos = {};\ntry { datos = JSON.parse(item.datos_parciales || '{}'); } catch (e) { datos = {}; }\nreturn [{\n  json: {\n    chat_id: item.chat_id,\n    telegram_user: item.telegram_user,\n    text: (item.text || '').trim(),\n    paso_actual: item.paso_actual || '',\n    id_estudiante: datos.id_estudiante || '',\n    nombre_estudiante: datos.nombre_estudiante || '',\n    materia: datos.materia || '',\n    fecha: datos.fecha || '',\n    materias_disponibles: datos.materias_disponibles || [],\n    opciones: datos.opciones || []\n  }\n}];"
       },
-      "id": "ca2f9715-8396-47d9-8542-74963d5d2916",
+      "id": "69419dc9-7bc8-4df1-b0e1-8706a60292e5",
       "name": "Parsear Datos Parciales",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1248,
-        1360
+        -64,
+        1008
       ]
     },
     {
@@ -118,13 +118,13 @@
           "fallbackOutput": "extra"
         }
       },
-      "id": "22213f01-012d-4bb5-b6d6-ff66c09445d5",
+      "id": "764fa845-ccdb-41c3-a7f9-1591fa4fde4c",
       "name": "Segun Paso Actual",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
       "position": [
-        1472,
-        1328
+        160,
+        976
       ]
     },
     {
@@ -148,13 +148,13 @@
         },
         "options": {}
       },
-      "id": "64f4ac17-122d-4130-b7bb-50418724c834",
+      "id": "fdb46503-3fab-45f6-a629-1a71ca3a70ad",
       "name": "Buscar Estudiante",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1696,
-        1840
+        384,
+        1200
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -176,13 +176,13 @@
         },
         "options": {}
       },
-      "id": "aa016e74-bd88-4122-a100-096ef0de065f",
+      "id": "b90ca474-a474-4390-958d-c3309fb14f78",
       "name": "Buscar Materias",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1920,
-        1840
+        608,
+        1200
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -195,13 +195,13 @@
       "parameters": {
         "jsCode": "const estudiante = $('Buscar Estudiante').first().json;\nconst materiasRows = $input.all().map(i => i.json);\nconst lista = materiasRows.map((m, idx) => `${idx+1}. ${m.nombre_materia}`).join('\\n');\nconst materias_disponibles = materiasRows.map(m => ({ id_materia: m.id_materia, nombre_materia: m.nombre_materia }));\nreturn [{\n  json: {\n    chat_id: $('Parsear Datos Parciales').item.json.chat_id,\n    telegram_user: $('Parsear Datos Parciales').item.json.telegram_user,\n    id_estudiante: estudiante.id_estudiante || '',\n    nombre_estudiante: estudiante.nombre || '',\n    mensaje_materias: 'Elige una materia escribiendo el numero:\\n' + lista,\n    datos_parciales_json: JSON.stringify({ id_estudiante: estudiante.id_estudiante || '', nombre_estudiante: estudiante.nombre || '', materias_disponibles })\n  }\n}];"
       },
-      "id": "1de85637-d9f7-4805-8094-37ada2a329de",
+      "id": "fabfe660-b7dd-4040-ba28-3b0d3f932b07",
       "name": "Formatear Menu Materias",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2144,
-        1840
+        832,
+        1200
       ]
     },
     {
@@ -212,15 +212,15 @@
           "appendAttribution": false
         }
       },
-      "id": "16d442a2-0161-4c85-9acb-7c5aa118874c",
+      "id": "1d59233a-9909-4ff5-98be-6270f2cd328c",
       "name": "Mostrar Materias",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2368,
-        1840
+        1056,
+        1200
       ],
-      "webhookId": "8636c6ce-9f4f-47fa-8646-a504583b7458",
+      "webhookId": "69ab3f13-6ba8-41da-ad63-0c92f8e86342",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -294,13 +294,13 @@
         },
         "options": {}
       },
-      "id": "8803446a-669f-4a17-9a40-056eb970c464",
+      "id": "ed62bf4a-08ac-4ec7-9416-3dc5a62f06d4",
       "name": "Guardar Sesion - Esperando Materia",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        2592,
-        1840
+        1280,
+        1200
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -313,13 +313,13 @@
       "parameters": {
         "jsCode": "const item = $input.first().json;\nconst idx = parseInt((item.text || '').trim(), 10) - 1;\nconst materias = item.materias_disponibles || [];\nconst valido = !isNaN(idx) && idx >= 0 && idx < materias.length;\nconst materiaElegida = valido ? materias[idx] : null;\nreturn [{ json: { ...item, materia_valida: valido, materia_nombre: materiaElegida ? materiaElegida.nombre_materia : '' } }];"
       },
-      "id": "c9741b50-df0a-4640-a550-bc3fbbc808d5",
+      "id": "a3adb338-a64e-4003-ae16-090cc9cd191c",
       "name": "Interpretar Seleccion Materia",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1696,
-        784
+        384,
+        528
       ]
     },
     {
@@ -345,26 +345,26 @@
         },
         "options": {}
       },
-      "id": "3c96eceb-6439-4f89-ac08-68e61b151edd",
+      "id": "71db6459-b6ef-4096-b3d7-de0fded33292",
       "name": "Materia Valida",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        1920,
-        784
+        608,
+        528
       ]
     },
     {
       "parameters": {
         "jsCode": "const item = $input.first().json;\nconst materiaNombre = item.materia_nombre || '';\nconst datos = { id_estudiante: item.id_estudiante, nombre_estudiante: item.nombre_estudiante, materia: materiaNombre };\nreturn [{ json: { ...item, materia_nombre: materiaNombre, datos_parciales_json: JSON.stringify(datos) } }];"
       },
-      "id": "3ccc8c68-9dda-43fc-95eb-d73c1bbe85bb",
+      "id": "26a85b93-76c0-4a55-9974-14ab46d8d19b",
       "name": "Guardar Datos Materia",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2144,
-        688
+        832,
+        432
       ]
     },
     {
@@ -375,15 +375,15 @@
           "appendAttribution": false
         }
       },
-      "id": "fcc7dad5-4101-4b76-9fee-29bf748baabc",
+      "id": "dbe06a0e-77a6-4447-bf12-0e99ba4e149a",
       "name": "Pedir Fecha",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2368,
-        688
+        1056,
+        432
       ],
-      "webhookId": "365a0366-3f4e-41d8-947c-f838c8c40c9f",
+      "webhookId": "1df8723c-09bc-4d95-9691-899880e3838a",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -457,13 +457,13 @@
         },
         "options": {}
       },
-      "id": "b556552b-4085-4870-915c-7cc95f996f36",
+      "id": "3d193399-944a-43f6-9ed9-ed631c1f970a",
       "name": "Guardar Sesion - Esperando Fecha",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        2592,
-        688
+        1280,
+        432
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -480,15 +480,15 @@
           "appendAttribution": false
         }
       },
-      "id": "18d209fa-eda1-4460-a7fc-30ab496392b1",
+      "id": "aecb92e0-d1c4-4a27-92fb-36ca157c1d35",
       "name": "Materia Invalida",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2144,
-        880
+        832,
+        624
       ],
-      "webhookId": "95f1f24a-d607-413f-9c85-8e7e13128395",
+      "webhookId": "db7d55f5-1a17-4e97-8322-481a6e840a01",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -500,13 +500,13 @@
       "parameters": {
         "jsCode": "const item = $input.first().json;\nconst fecha = (item.text || '').trim();\nconst regex = /^\\d{4}-\\d{2}-\\d{2}$/;\nlet valido = regex.test(fecha);\nlet dia_semana = '';\nif (valido) {\n  const d = new Date(fecha + 'T00:00:00');\n  if (isNaN(d.getTime())) {\n    valido = false;\n  } else {\n    const dias = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];\n    dia_semana = dias[d.getDay()];\n    const hoy = new Date();\n    hoy.setHours(0,0,0,0);\n    if (d < hoy) valido = false;\n  }\n}\nreturn [{ json: { ...item, fecha, fecha_valida: valido, dia_semana } }];"
       },
-      "id": "be4e1463-e523-4db0-8cfa-b0af1a0eaa6f",
+      "id": "71a186d2-9b8f-44cb-bff8-cce70f886a8d",
       "name": "Validar Fecha",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1696,
-        1168
+        384,
+        912
       ]
     },
     {
@@ -532,13 +532,13 @@
         },
         "options": {}
       },
-      "id": "d048d3d3-fbb1-4791-b4d5-d39bc4b448bb",
+      "id": "1bf9472e-e77b-4c17-836e-ba405bbfa1ef",
       "name": "Fecha Valida",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        1920,
-        1168
+        608,
+        912
       ]
     },
     {
@@ -554,13 +554,13 @@
         },
         "options": {}
       },
-      "id": "b2292770-4508-4146-ab51-a320e014a03e",
+      "id": "444cd4fc-0635-477e-af31-af86147fe83b",
       "name": "Buscar Tutores Activos",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        2144,
-        1072
+        832,
+        816
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -573,13 +573,13 @@
       "parameters": {
         "jsCode": "const materia = ($('Validar Fecha').item.json.materia || '').trim().toLowerCase();\nconst tutores = $input.all().map(i => i.json).filter(t => {\n  const estadoOk = (t.estado || '').trim().toLowerCase() === 'activo';\n  const materias = (t.especialidad_materia || t.especialidad_materias || '').split(',').map(s => s.trim().toLowerCase());\n  return estadoOk && materias.includes(materia);\n});\nreturn [{ json: { tutores_json: JSON.stringify(tutores) } }];"
       },
-      "id": "03740313-00a0-4d3a-aeca-96187953e366",
+      "id": "e3ce7514-47d2-4723-88f5-f4a0c576d490",
       "name": "Filtrar Tutores por Materia",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2368,
-        1072
+        1056,
+        816
       ]
     },
     {
@@ -595,13 +595,13 @@
         },
         "options": {}
       },
-      "id": "3bbb25cd-c5aa-4dc7-bb18-7926912682e2",
+      "id": "775bc065-9f76-47eb-9ab2-19725a1ea339",
       "name": "Buscar Disponibilidad Libre",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        2592,
-        1072
+        1280,
+        816
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -612,15 +612,15 @@
     },
     {
       "parameters": {
-        "jsCode": "const tutores = JSON.parse($('Filtrar Tutores por Materia').item.json.tutores_json);\nconst tutorIds = tutores.map(t => t.id_tutor);\nconst base = $('Validar Fecha').item.json;\nconst diaSemana = (base.dia_semana || '').trim().toLowerCase();\nconst disponibilidad = $input.all().map(i => i.json).filter(d => {\n  const estadoOk = (d.estado || '').trim().toLowerCase() === 'libre';\n  const diaOk = (d.dia_semana || '').trim().toLowerCase() === diaSemana;\n  return estadoOk && diaOk && tutorIds.includes(d.id_tutor);\n});\nconst opciones = disponibilidad.map(d => {\n  const t = tutores.find(t => t.id_tutor === d.id_tutor);\n  return { id_dispo: d.id_dispo, id_tutor: d.id_tutor, nombre_tutor: t ? t.nombre : '', dia_semana: d.dia_semana, hora_inicio: d.hora_inicio, hora_fin: d.hora_fin };\n});\nreturn [{ json: {\n  chat_id: base.chat_id,\n  telegram_user: base.telegram_user,\n  id_estudiante: base.id_estudiante,\n  nombre_estudiante: base.nombre_estudiante,\n  materia: base.materia,\n  fecha: base.fecha,\n  opciones,\n  hay_opciones: opciones.length > 0,\n  datos_parciales_json: JSON.stringify({ id_estudiante: base.id_estudiante, nombre_estudiante: base.nombre_estudiante, materia: base.materia })\n} }];"
+        "jsCode": "const tutores = JSON.parse($(\"Filtrar Tutores por Materia\").item.json.tutores_json);\nconst tutorIds = tutores.map(t => t.id_tutor);\nconst base = $(\"Validar Fecha\").item.json;\nconst ESTADOS_LIBRES = [\"libre\", \"disponible\"];\nconst disponibilidad = $input.all().map(i => i.json).filter(d => ESTADOS_LIBRES.includes((d.estado || \"\").trim().toLowerCase()) && (d.dia_semana || \"\").trim().toLowerCase() === (base.dia_semana || \"\").trim().toLowerCase() && tutorIds.includes(d.id_tutor));\nconst opciones = disponibilidad.map(d => {\n  const t = tutores.find(t => t.id_tutor === d.id_tutor);\n  return { id_dispo: d.id_dispo, id_tutor: d.id_tutor, nombre_tutor: t ? t.nombre : \"\", dia_semana: d.dia_semana, hora_inicio: d.hora_inicio, hora_fin: d.hora_fin };\n});\nreturn [{ json: {\n  chat_id: base.chat_id,\n  telegram_user: base.telegram_user,\n  id_estudiante: base.id_estudiante,\n  nombre_estudiante: base.nombre_estudiante,\n  materia: base.materia,\n  fecha: base.fecha,\n  opciones,\n  hay_opciones: opciones.length > 0,\n  datos_parciales_json: JSON.stringify({ id_estudiante: base.id_estudiante, nombre_estudiante: base.nombre_estudiante, materia: base.materia })\n} }];"
       },
-      "id": "d46c10f8-838c-49ee-a26d-e12ce937f950",
+      "id": "9b89068a-c8aa-4107-96e4-98595a4cfa20",
       "name": "Cruzar Disponibilidad",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2816,
-        1072
+        1504,
+        816
       ]
     },
     {
@@ -646,26 +646,26 @@
         },
         "options": {}
       },
-      "id": "13ab4374-23b6-4131-ad7e-5c0b481e30a6",
+      "id": "16f69033-84e6-40b5-a3cc-f08125eceefe",
       "name": "Hay Opciones",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        3040,
-        1072
+        1728,
+        816
       ]
     },
     {
       "parameters": {
         "jsCode": "const cruzado = $('Cruzar Disponibilidad').item.json;\nconst opciones = cruzado.opciones;\nconst lista = opciones.map((o, idx) => `${idx+1}. ${o.nombre_tutor} - ${o.dia_semana} ${o.hora_inicio} a ${o.hora_fin}`).join('\\n');\nreturn [{ json: {\n  chat_id: cruzado.chat_id,\n  telegram_user: cruzado.telegram_user,\n  mensaje_opciones: 'Estas son las opciones disponibles, escribe el numero para elegir:\\n' + lista,\n  datos_parciales_json: JSON.stringify({ id_estudiante: cruzado.id_estudiante, nombre_estudiante: cruzado.nombre_estudiante, materia: cruzado.materia, fecha: cruzado.fecha, opciones })\n} }];"
       },
-      "id": "5761de45-33ac-4394-954a-571fed7b7a28",
+      "id": "3b7ea5ce-ece0-416b-a38f-0fbf7bd581ed",
       "name": "Formatear Opciones",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3264,
-        976
+        1952,
+        720
       ]
     },
     {
@@ -676,15 +676,15 @@
           "appendAttribution": false
         }
       },
-      "id": "2fd150b3-a4e9-4e85-bf29-4a930dce3dcd",
+      "id": "247ea8bf-2bef-4a08-a8cc-9046158f3760",
       "name": "Mostrar Opciones",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        3488,
-        976
+        2176,
+        720
       ],
-      "webhookId": "1ae7c66c-9dfa-4b04-a7ee-b14040fc5688",
+      "webhookId": "c520e766-7ca9-445c-9c84-8766571f04ae",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -758,13 +758,13 @@
         },
         "options": {}
       },
-      "id": "184be99a-1462-48d2-9db7-b2ab2c40b425",
+      "id": "250732fb-5168-41a5-bedd-db7ae3eca654",
       "name": "Guardar Sesion - Esperando Confirmacion",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3712,
-        976
+        2400,
+        720
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -781,15 +781,15 @@
           "appendAttribution": false
         }
       },
-      "id": "1fbcda5f-dcee-4333-9d6c-82fddc1baa28",
+      "id": "e38f3beb-fdad-454f-9c9a-d952bee3d870",
       "name": "Sin Disponibilidad",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        3264,
-        1168
+        1952,
+        1008
       ],
-      "webhookId": "476e9aac-aa9a-4dec-8b0b-886c1d42a925",
+      "webhookId": "540eb0ee-a402-4d72-9107-132cdea9c87a",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -863,13 +863,13 @@
         },
         "options": {}
       },
-      "id": "e0adb27a-133c-4cf7-a242-e389e788785b",
+      "id": "afe3c1e9-8799-4f71-be58-8867002f91da",
       "name": "Mantener Sesion Esperando Fecha",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3488,
-        1168
+        2176,
+        1008
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -886,15 +886,15 @@
           "appendAttribution": false
         }
       },
-      "id": "c1edd7e0-2263-4f17-a667-e106272dd397",
+      "id": "9c23bc15-2a47-4a46-9005-ab34f6caeefb",
       "name": "Fecha Invalida",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2144,
-        1264
+        832,
+        1008
       ],
-      "webhookId": "bfc0f318-2303-425e-9e18-58ee2af2d8a3",
+      "webhookId": "5b5fbbf3-f6c0-4983-a53a-f36aa914167d",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -906,13 +906,13 @@
       "parameters": {
         "jsCode": "const item = $input.first().json;\nconst idx = parseInt((item.text || '').trim(), 10) - 1;\nconst opciones = item.opciones || [];\nconst valido = !isNaN(idx) && idx >= 0 && idx < opciones.length;\nconst elegida = valido ? opciones[idx] : null;\nreturn [{ json: { ...item, opcion_valida: valido, opcion_elegida: elegida } }];"
       },
-      "id": "b3ac2f97-528a-4d07-9b10-102aa7181d63",
+      "id": "0618d889-22fa-49dd-8f9a-bc07ff6fa7fa",
       "name": "Interpretar Seleccion Opcion",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1696,
-        1552
+        384,
+        1488
       ]
     },
     {
@@ -938,13 +938,13 @@
         },
         "options": {}
       },
-      "id": "22bf8964-4124-49a5-adef-50c9342e5c6e",
+      "id": "19fd579a-fa9f-419f-bb74-f237ad4c1446",
       "name": "Opcion Valida",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        1920,
-        1552
+        608,
+        1488
       ]
     },
     {
@@ -955,15 +955,15 @@
           "appendAttribution": false
         }
       },
-      "id": "397addf4-1074-4dee-8b3f-835cf263ee4b",
+      "id": "648aa104-fddc-41b1-8c8a-37f8b2a3a76d",
       "name": "Opcion Invalida",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        2144,
-        1648
+        832,
+        1584
       ],
-      "webhookId": "e1ba18b6-e927-4a39-93f0-3d956a16b26d",
+      "webhookId": "59a22cbe-58fa-499d-a0ba-0c07466745da",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -975,13 +975,13 @@
       "parameters": {
         "jsCode": "const item = $input.first().json;\nconst opcion = item.opcion_elegida;\nconst id_tutoria = 'TUT-' + Date.now().toString(36).toUpperCase();\nreturn [{ json: {\n  chat_id: item.chat_id,\n  telegram_user: item.telegram_user,\n  id_estudiante: item.id_estudiante,\n  nombre_estudiante: item.nombre_estudiante,\n  materia: item.materia,\n  fecha: item.fecha,\n  id_tutor: opcion.id_tutor,\n  nombre_tutor: opcion.nombre_tutor,\n  id_dispo: opcion.id_dispo,\n  hora_inicio: opcion.hora_inicio,\n  hora_fin: opcion.hora_fin,\n  id_tutoria\n} }];"
       },
-      "id": "0ad2089d-a854-4da2-b308-730f0a0ecab4",
+      "id": "9fdfad27-4ef5-4a15-ac75-a241a1e62442",
       "name": "Preparar Datos Asignacion",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2144,
-        1456
+        832,
+        1392
       ]
     },
     {
@@ -1005,13 +1005,13 @@
         },
         "options": {}
       },
-      "id": "500959e4-e599-424c-bce2-94d95ad8f902",
+      "id": "0fe51916-e33a-473f-882e-13f76c7618cd",
       "name": "Buscar Chat Tutor",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3040,
-        1360
+        1728,
+        1296
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1024,13 +1024,13 @@
       "parameters": {
         "jsCode": "const base = $('Preparar Datos Asignacion').item.json;\nconst tutorRow = $input.first().json;\nreturn [{ json: { ...base, tutor_chat_id: tutorRow.telegram_user || '' } }];"
       },
-      "id": "0cf2f513-8bd0-4f03-b3d0-32dc5beb8b23",
+      "id": "4b7c5444-de05-4bd7-bb1b-82f1ebf5199f",
       "name": "Combinar Datos Asignacion",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3264,
-        1360
+        1952,
+        1296
       ]
     },
     {
@@ -1127,13 +1127,13 @@
         },
         "options": {}
       },
-      "id": "d8e0f8cc-d13c-45ad-bdf9-006053a6c9a6",
+      "id": "df0a3ff0-e64f-402e-a868-b639f6b1bad1",
       "name": "Crear Tutoria",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3488,
-        1360
+        2176,
+        1296
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1188,13 +1188,13 @@
         },
         "options": {}
       },
-      "id": "8a26c364-e13e-48c2-8048-396456c272d0",
+      "id": "9d28af5c-22db-460c-97df-4d1f9b6301a4",
       "name": "Actualizar Disponibilidad",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3712,
-        1360
+        2400,
+        1296
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1269,13 +1269,13 @@
         },
         "options": {}
       },
-      "id": "07d18f67-0072-4ca3-909a-cc19d40e9671",
+      "id": "56e4f35b-7708-4f4c-b9ca-dc658b151c14",
       "name": "Limpiar Sesion Solicitud",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        5680,
-        1616
+        4032,
+        1168
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1292,15 +1292,15 @@
           "appendAttribution": false
         }
       },
-      "id": "9b47fe67-415d-4d0a-8335-78d73a1e295a",
+      "id": "7ed2b8ad-7368-4bc2-8398-24e422d2b1a9",
       "name": "Confirmar Estudiante",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        5904,
-        1616
+        4336,
+        896
       ],
-      "webhookId": "3597dd6a-ed06-4568-9998-0da786617db6",
+      "webhookId": "ca5ec696-3659-438b-8efa-67f406f5d786",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -1316,15 +1316,15 @@
           "appendAttribution": false
         }
       },
-      "id": "17358569-c3c8-42ab-8640-f0e0eefca597",
+      "id": "6919098d-b438-461b-b72c-dafeb0755b46",
       "name": "Notificar Tutor",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        6112,
-        1616
+        4864,
+        848
       ],
-      "webhookId": "161b92db-1fdc-4fbe-a740-3d2364aed441",
+      "webhookId": "e4870a41-d706-4751-b4f0-7f9553343920",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -1353,13 +1353,13 @@
         },
         "options": {}
       },
-      "id": "00a99f35-f200-435c-98cc-9012a26827c6",
+      "id": "9cb3f5d3-8988-4d5b-92e9-8178ebf70c87",
       "name": "Revalidar Disponibilidad",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        2368,
-        1456
+        1056,
+        1392
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1372,13 +1372,13 @@
       "parameters": {
         "jsCode": "const fila = $input.first().json;\nconst sigueLibre = (fila.estado || '').trim().toLowerCase() === 'libre';\nreturn [{ json: { ...$('Preparar Datos Asignacion').item.json, sigue_libre: sigueLibre } }];"
       },
-      "id": "1c9c71ed-2f9c-4d58-9441-50dfb7187430",
+      "id": "dee4aede-e13b-4fea-b918-b7d965e09f7e",
       "name": "Verificar Aun Libre",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2592,
-        1456
+        1280,
+        1392
       ]
     },
     {
@@ -1404,13 +1404,13 @@
         },
         "options": {}
       },
-      "id": "109c4648-953d-4a42-8627-7956c9c46b65",
+      "id": "48662b37-acbd-4568-a713-8e4696865c39",
       "name": "Sigue Libre",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        2816,
-        1456
+        1504,
+        1392
       ]
     },
     {
@@ -1421,15 +1421,15 @@
           "appendAttribution": false
         }
       },
-      "id": "f051c4f4-9134-43c3-958c-195373c5b891",
+      "id": "6fc4ba77-d37d-4213-8ebb-863eb996c178",
       "name": "Cupo Ya No Disponible",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        3040,
-        1552
+        1728,
+        1488
       ],
-      "webhookId": "8659cd18-2cf8-4627-8d7b-44deb7e3fe2a",
+      "webhookId": "9c1473ce-fc53-4662-82ab-a0d9d3230591",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -1503,13 +1503,13 @@
         },
         "options": {}
       },
-      "id": "17f333c9-217b-4366-a45c-de246aec6379",
+      "id": "14e75c03-c496-4c88-98e4-4689285f3ff1",
       "name": "Volver a Esperando Fecha",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3264,
-        1552
+        1952,
+        1488
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1539,13 +1539,13 @@
         },
         "options": {}
       },
-      "id": "4e4e1c23-c4ed-4168-9cb3-a67219b88262",
+      "id": "da781b25-960d-4e84-b2a7-f24d7740ff2f",
       "name": "Contar Disponibilidad Tutor",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3936,
-        1360
+        2624,
+        1296
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -1556,15 +1556,15 @@
     },
     {
       "parameters": {
-        "jsCode": "const filas = $input.all().map(i => i.json);\nconst libres = filas.filter(f => (f.estado || '').trim().toLowerCase() === 'libre');\nreturn [{ json: {\n  id_tutor: $('Combinar Datos Asignacion').item.json.id_tutor,\n  nombre_tutor: $('Combinar Datos Asignacion').item.json.nombre_tutor,\n  franjas_libres: libres.length\n} }];"
+        "jsCode": "const filas = $input.all().map(i => i.json);\nconst ESTADOS_LIBRES = [\"libre\", \"disponible\"];\nconst libres = filas.filter(f => ESTADOS_LIBRES.includes((f.estado || \"\").trim().toLowerCase()));\nreturn [{ json: {\n  id_tutor: $(\"Combinar Datos Asignacion\").item.json.id_tutor,\n  nombre_tutor: $(\"Combinar Datos Asignacion\").item.json.nombre_tutor,\n  franjas_libres: libres.length\n} }];"
       },
-      "id": "7e486144-9c9b-4d51-b346-a592ce43a41c",
+      "id": "d4fd6418-07db-4d5e-b56c-684f697ad5f3",
       "name": "Calcular Franjas Libres",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4160,
-        1360
+        2848,
+        1296
       ]
     },
     {
@@ -1590,32 +1590,32 @@
         },
         "options": {}
       },
-      "id": "e877049e-573c-43a4-929a-f15ddc691e83",
+      "id": "e44be27b-91b6-4e9b-bb69-a9b892d530ad",
       "name": "Disponibilidad Critica",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        4384,
-        1360
+        3072,
+        1296
       ]
     },
     {
       "parameters": {
-        "chatId": "6725070929",
+        "chatId": "COORDINACION_CHAT_ID",
         "text": "=⚠️ ALERTA DE DISPONIBILIDAD: El tutor {{$json.nombre_tutor}} solo tiene {{$json.franjas_libres}} franja(s) libre(s). Favor gestionar refuerzo.",
         "additionalFields": {
           "appendAttribution": false
         }
       },
-      "id": "96fe9421-dd95-47c9-a69e-9707da926eb4",
+      "id": "e36f5e16-04b2-4198-957e-a821df75ae05",
       "name": "Alertar Coordinacion",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        4976,
-        1136
+        3312,
+        1040
       ],
-      "webhookId": "55812a61-428c-42a5-b68f-443f0e08733e",
+      "webhookId": "830bd2ee-400d-49a8-b064-8d9ab8fff7a2",
       "credentials": {
         "telegramApi": {
           "id": "TvJad5y9bWYoDqXu",
@@ -1646,13 +1646,13 @@
         },
         "options": {}
       },
-      "id": "4388e6dd-decf-42d7-8905-06b9e6c11984",
+      "id": "bdd3120d-c64a-48ef-bf33-98a577397537",
       "name": "Disponibilidad Cero",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        5216,
-        1136
+        3536,
+        928
       ]
     },
     {
@@ -1701,13 +1701,13 @@
         },
         "options": {}
       },
-      "id": "386700fc-8c51-4d63-9ec4-bf41a206ad4d",
+      "id": "17305190-648b-4945-88cc-5acdad00405c",
       "name": "Marcar Tutor Inactivo",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        5456,
-        1120
+        3856,
+        800
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -2230,13 +2230,13 @@
       ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
     "availableInMCP": true
   },
-  "versionId": "2878fa2a-1efe-4629-9c69-807ffb6e2949",
+  "versionId": "821a9371-6cdf-416b-b2a0-6b84575f638b",
   "meta": {
     "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
   },
