@@ -1,0 +1,371 @@
+{
+  "name": "Workflow 2.1 - Alerta Disponibilidad Critica",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "DISPONIBILIDAD"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_tutor",
+              "lookupValue": "={{$json.id_tutor}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a00b010a-368a-466a-b6e8-896776ca9f90",
+      "name": "Contar Disponibilidad Tutor",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -2608,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "TUTORES"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_tutor",
+              "lookupValue": "={{$('Trigger Cambio Disponibilidad').item.json.id_tutor}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a293037c-bc1a-484a-8b2a-bb8da7fc8842",
+      "name": "Buscar Nombre Tutor",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -2384,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const ESTADOS_LIBRES = ['libre', 'disponible'];\nconst filasDisponibilidad = $('Contar Disponibilidad Tutor').all().map(i => i.json);\nconst libres = filasDisponibilidad.filter(f => ESTADOS_LIBRES.includes((f.estado || '').trim().toLowerCase()));\nconst tutor = $input.first().json;\nreturn [{ json: {\n  id_tutor: $('Trigger Cambio Disponibilidad').item.json.id_tutor,\n  nombre_tutor: tutor.nombre || $('Trigger Cambio Disponibilidad').item.json.id_tutor,\n  franjas_libres: libres.length\n} }];"
+      },
+      "id": "317fb598-5b33-4658-8e5d-fefa67065e5e",
+      "name": "Calcular Franjas Libres",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2160,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{$json.franjas_libres}}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ce6fda49-b05d-470e-ae0f-a315038fdcdc",
+      "name": "Disponibilidad Critica",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1936,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "8244114402",
+        "text": "=⚠️ ALERTA DE DISPONIBILIDAD: El tutor {{$json.nombre_tutor}} solo tiene {{$json.franjas_libres}} franja(s) libre(s). Favor gestionar refuerzo.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "8ee12655-2581-4ae3-8d32-7bb01db2a431",
+      "name": "Alertar Coordinacion",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1728,
+        256
+      ],
+      "webhookId": "e3c119a7-c49a-43f3-8b2b-b8bfda66a6ac",
+      "credentials": {
+        "telegramApi": {
+          "id": "TvJad5y9bWYoDqXu",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{$('Calcular Franjas Libres').item.json.franjas_libres}}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "063aa77b-c4bb-4cee-ac02-6f9f823f0c34",
+      "name": "Disponibilidad Cero",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1504,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek"
+        },
+        "sheetName": {
+          "mode": "name",
+          "value": "TUTORES"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [
+            "id_tutor"
+          ],
+          "value": {
+            "id_tutor": "={{$('Calcular Franjas Libres').item.json.id_tutor}}",
+            "estado": "Inactivo"
+          },
+          "schema": [
+            {
+              "id": "id_tutor",
+              "displayName": "id_tutor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "ecfec704-d989-48de-916e-3335aef53a32",
+      "name": "Marcar Tutor Inactivo",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -1280,
+        192
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cnHcu4BnAymkQVg9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1121236069,
+          "mode": "list",
+          "cachedResultName": "DISPONIBILIDAD",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1tqZ7v554xgO0G0LUbOZ9ciNjXSj-K6WGXydWN9hmHek/edit#gid=1121236069"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2800,
+        208
+      ],
+      "id": "8ac1bc93-7afc-4f52-8984-8d878713d8e5",
+      "name": "Trigger Cambio Disponibilidad",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "CSTBOygvrhAttDfd",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Contar Disponibilidad Tutor": {
+      "main": [
+        [
+          {
+            "node": "Buscar Nombre Tutor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Nombre Tutor": {
+      "main": [
+        [
+          {
+            "node": "Calcular Franjas Libres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Franjas Libres": {
+      "main": [
+        [
+          {
+            "node": "Disponibilidad Critica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disponibilidad Critica": {
+      "main": [
+        [
+          {
+            "node": "Alertar Coordinacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alertar Coordinacion": {
+      "main": [
+        [
+          {
+            "node": "Disponibilidad Cero",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disponibilidad Cero": {
+      "main": [
+        [
+          {
+            "node": "Marcar Tutor Inactivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger Cambio Disponibilidad": {
+      "main": [
+        [
+          {
+            "node": "Contar Disponibilidad Tutor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "07450ef4-5c09-410e-a288-4b6a5e34fcf3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2ef2a98c5ba6714b7afff743ffdfaba7364469ad41d9946d3505faafd696faf4"
+  },
+  "nodeGroups": [],
+  "id": "rzv281TX7eWxHLxi",
+  "tags": []
+}
